@@ -1,0 +1,6 @@
+{
+  "globals": {
+    "ImportMetaEnv": true,
+    "ViteEnv": true
+  }
+}
