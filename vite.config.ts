@@ -82,7 +82,11 @@ export default defineConfig(({ command }) => {
         }
       ]),
       // Use Node.js API in the Renderer-process
-      renderer(),
+      renderer({
+        resolve: {
+          'fs-extra': { type: 'esm' }
+        }
+      }),
       commonjs(),
       AutoImportTypes({
         dtsDir: 'types'
