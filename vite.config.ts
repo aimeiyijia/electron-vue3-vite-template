@@ -122,7 +122,7 @@ export default defineConfig(({ command }) => {
     server:
       process.env.VSCODE_DEBUG &&
       (() => {
-        const url = new URL(import.meta.env.VITE_BASE_URL)
+        const url = new URL('0.0.0.0')
         return {
           host: url.hostname,
           port: +url.port

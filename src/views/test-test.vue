@@ -1,14 +1,22 @@
 <script setup lang="ts">
+// main.ts/main.js
+
+const { appContext } = getCurrentInstance()!
 import HelloWorld from '../components/HelloWorld.vue'
+
+const open = () => {
+  ElMessage({ message: '消息列表' })
+}
 
 console.log('[App.vue]', `Hello world from Electron ${process.versions.electron}!`)
 </script>
 
 <template>
   <div>
-    <a href="https://www.electronjs.org/" target="_blank">
+    <el-button>12345</el-button>
+    <div @click="open">
       <img src="../assets/electron.svg" class="logo electron" alt="Electron logo" />
-    </a>
+    </div>
     <a href="https://vitejs.dev/" target="_blank">
       <img src="../assets/vite.svg" class="logo" alt="Vite logo" />
     </a>
