@@ -1,36 +1,54 @@
 <script setup lang="ts">
-// main.ts/main.js
-
-const { appContext } = getCurrentInstance()!
-import HelloWorld from '../components/HelloWorld.vue'
-
+// import { dialog } from 'electron'
+// const { dialog } = require('electron')
+import { dialog } from '@electron/remote'
+// 函数式
+// 定义状态
+const dialogVisible = ref(false)
+// add remove detail
+const operaType = ref('add')
+// 打开动作
 const open = () => {
-  ElMessage({ message: '消息列表' })
+  dialogVisible.value = true
+
+  console.log('hahhaha')
+}
+const handleOpen = () => {
+  dialog.showOpenDialog({
+    properties: ['openDirectory']
+  })
+  open()
+  operaType.value = 'add'
+}
+const handleRemove = () => {
+  open()
+  operaType.value = 'remove'
+}
+const handleDetail = () => {
+  open()
+  operaType.value = 'detail'
 }
 
-console.log('[App.vue]', `Hello world from Electron ${process.versions.electron}!`)
+const operaTitle = computed(() => {
+  const titleMap: { [key: string]: string } = {
+    add: '新增',
+    remove: '删除',
+    detail: '详情'
+  }
+  return titleMap[operaType.value] || '未知操作'
+})
 </script>
 
 <template>
   <div>
-    <el-button>12345</el-button>
-    <div @click="open">
-      <img src="../assets/electron.svg" class="logo electron" alt="Electron logo" />
-    </div>
-    <a href="https://vitejs.dev/" target="_blank">
-      <img src="../assets/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="../assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <!-- 事件 -->
+    <el-button @click="handleOpen">新增</el-button>
+    <el-button @click="handleRemove">删除</el-button>
+    <el-button @click="handleDetail">详情</el-button>
   </div>
-  <HelloWorld msg="Electron + Vite + Vue" />
-  <div class="flex-center">
-    Place static files into the
-    <code>/public</code>
-    folder
-    <img style="margin-left: 0.4em; width: 2.4em" src="/logo.svg" alt="Logo" />
-  </div>
+  <el-dialog v-model="dialogVisible" :title="operaTitle" width="30%" :before-close="handleClose">
+    <span>操作类型{{ operaType }}</span>
+  </el-dialog>
 </template>
 
 <style>
@@ -38,20 +56,5 @@ console.log('[App.vue]', `Hello world from Electron ${process.versions.electron}
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.logo {
-  padding: 1.5em;
-  height: 6em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo.electron:hover {
-  filter: drop-shadow(0 0 2em #9feaf9);
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
 }
 </style>

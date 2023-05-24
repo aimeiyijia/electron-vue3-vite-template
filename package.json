@@ -78,6 +78,7 @@
   },
   "dependencies": {
     "@commitlint/config-conventional": "^17.6.3",
+    "@electron/remote": "^2.0.9",
     "@iconify-json/ep": "^1.1.10",
     "axios": "^1.4.0",
     "crypto-js": "^4.1.1",

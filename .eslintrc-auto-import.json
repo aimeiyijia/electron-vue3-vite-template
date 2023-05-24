@@ -4,7 +4,6 @@
     "ComponentPublicInstance": "readonly",
     "ComputedRef": "readonly",
     "EffectScope": "readonly",
-    "ElMessage": "readonly",
     "InjectionKey": "readonly",
     "PropType": "readonly",
     "Ref": "readonly",

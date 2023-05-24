@@ -84,6 +84,7 @@ export default defineConfig(({ command }) => {
       // Use Node.js API in the Renderer-process
       renderer({
         resolve: {
+          'electron/remote': { type: 'esm' },
           'fs-extra': { type: 'esm' }
         }
       }),

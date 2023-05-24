@@ -1,9 +1,12 @@
 import { release } from 'node:os'
 import { join } from 'node:path'
 
+// *************************1.引入remote模块******************************
+import remote from '@electron/remote/main'
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import log from 'electron-log'
 import { autoUpdater } from 'electron-updater'
+remote.initialize()
 
 log.transports.file.level = 'info'
 autoUpdater.logger = log
@@ -88,6 +91,9 @@ async function createWindow() {
       contextIsolation: false
     }
   })
+
+  // ********2.启用remote模块，渲染进程就可以使用主程序模块********************
+  remote.enable(win.webContents)
 
   if (process.env.VITE_DEV_SERVER_URL) {
     // electron-vite-vue#298

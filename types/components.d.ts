@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     ChooseTag: typeof import('./../src/components/ChooseTag/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
     FilesListShow: typeof import('./../src/components/FilesListShow/index.vue')['default']
     HelloWorld: typeof import('./../src/components/HelloWorld.vue')['default']
     ImgTip: typeof import('./../src/components/ImgTip/index.vue')['default']
