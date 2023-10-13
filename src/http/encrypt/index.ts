@@ -8,7 +8,7 @@ import { IV, SECRET } from './constant'
 const { VITE_isEncrypt } = import.meta.env
 
 // 匹配加密方式
-const encryptType = {
+const encryptType: { [key: string]: any } = {
   GET: encryptGet,
   POST: encryptPost,
   DELETE: encryptGet,
@@ -16,35 +16,23 @@ const encryptType = {
 }
 
 // 加密
-export function encrypt(word, needParse = true, needReplace = false, isUrl = true) {
-  let value
+export function encrypt(word: any) {
   if (!VITE_isEncrypt) {
     return word
-  }
-  if (needParse) {
-    value = CryptoJS.enc.Utf8.parse(word)
-  } else {
-    value = word
   }
 
   const keys = CryptoJS.enc.Utf8.parse(SECRET)
   const ivs = CryptoJS.enc.Utf8.parse(IV)
-  let encrypted = CryptoJS.TripleDES.encrypt(value, keys, {
+  const encrypted = CryptoJS.TripleDES.encrypt(word, keys, {
     iv: ivs,
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7
   })
-  if (isUrl) {
-    encrypted = encodeURIComponent(encrypted)
-  }
-  if (needReplace) {
-    return encrypted.toString().replace('+', '%2B')
-  }
   return encrypted.toString()
 }
 
 // 解密
-export function decrypted(params) {
+export function decrypted(params: string) {
   const keys = CryptoJS.enc.Utf8.parse(SECRET)
   const ivs = CryptoJS.enc.Utf8.parse(IV)
   return CryptoJS.TripleDES.decrypt(params, keys, {
@@ -55,7 +43,7 @@ export function decrypted(params) {
 }
 
 // 加密get
-function encryptGet(httpConfig) {
+function encryptGet(httpConfig: any) {
   try {
     const { params } = httpConfig
     const cloneParams = deepClone(params)
@@ -63,7 +51,7 @@ function encryptGet(httpConfig) {
     paramsKeys.forEach(key => {
       const value = cloneParams[key]
       if (value !== '') {
-        cloneParams[key] = encrypt(value, true, false, false)
+        cloneParams[key] = encrypt(value)
       }
     })
     // console.log(encrypt(JSON.stringify(params)));
@@ -77,7 +65,7 @@ function encryptGet(httpConfig) {
 }
 
 // 把对象编码成&name=value&name=value形式
-function toQueryString(obj) {
+function toQueryString(obj: { [key: string]: any }) {
   if (!obj) return ''
   return deepClone(
     Object.keys(obj).map(key => {
@@ -88,14 +76,14 @@ function toQueryString(obj) {
 }
 
 // 加密post
-function encryptPost(httpConfig) {
+function encryptPost(httpConfig: any) {
   try {
     const { data } = httpConfig
-    let theRequest = {}
+    let theRequest: { [key: string]: any } = {}
     // 传参类型为 FormData
     if (Object.prototype.toString.call(data).includes('FormData')) {
       const formData = new FormData()
-      data.forEach((value, key) => {
+      data.forEach((value: any, key: string) => {
         // console.log(key, value)
         if (value instanceof File) {
           formData.append(key, value)
@@ -141,7 +129,7 @@ function encryptPost(httpConfig) {
     // 当是post请求，Content-Type是 application/json
     theRequest = data
     httpConfig.data = {
-      body: encrypt(JSON.stringify(data), true, false, false)
+      body: encrypt(JSON.stringify(data))
     }
     console.log(httpConfig, '加密后的POST请求配置 application/json')
     return httpConfig
@@ -152,12 +140,12 @@ function encryptPost(httpConfig) {
 }
 
 // 判断是不是在白名单中
-function isInWhiteLists(httpConfig) {
+function isInWhiteLists(httpConfig: any) {
   return noencryptLists.includes(httpConfig.url)
 }
 
 // 加密配置
-export function goEncrypt(httpConfig) {
+export function goEncrypt(httpConfig: any) {
   // 判断是否配置了加密
   if (!VITE_isEncrypt) {
     return httpConfig
@@ -169,7 +157,7 @@ export function goEncrypt(httpConfig) {
     return httpConfig
   }
   const cloneHttpConfig = deepClone(httpConfig)
-  const encrypteMethod = encryptType[cloneHttpConfig.method.toUpperCase()]
+  const encrypteMethod = encryptType[cloneHttpConfig.method.toUpperCase() as string]
   const config = encrypteMethod(cloneHttpConfig)
   return config
 }

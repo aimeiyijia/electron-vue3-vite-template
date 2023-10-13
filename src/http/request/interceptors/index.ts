@@ -1,4 +1,9 @@
-import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type {
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig
+} from 'axios'
 import { useRoute, useRouter } from 'vue-router'
 
 import useUserStore from '@/store/user'
@@ -10,7 +15,9 @@ import { nativeLists, whiteLists } from '../../white'
 
 const userStore = useUserStore()
 // 请求拦截器
-export function requestInterceptors(config: AxiosRequestConfig) {
+export function requestInterceptors(
+  config: InternalAxiosRequestConfig
+): InternalAxiosRequestConfig {
   const { url } = config
   const { token } = userStore
 
@@ -36,7 +43,7 @@ export function requestError(error: AxiosRequestConfig): Promise<AxiosRequestCon
   return Promise.reject(error)
 }
 // 响应拦截器
-export function responseInterceptors(response: AxiosResponse) {
+export function responseInterceptors(response: AxiosResponse): AxiosResponse {
   const { data } = response
   return data
 }

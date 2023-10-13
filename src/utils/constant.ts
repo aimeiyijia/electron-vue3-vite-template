@@ -1,1 +1,1 @@
-export const FORM_KEY = Symbol('van-form')
+export const constant = Symbol('test')

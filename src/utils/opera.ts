@@ -6,8 +6,13 @@ export function getValueByKey(key: string, row: any) {
   }, row)
 }
 
+type FileType = {
+  fileName: string
+  filePath: string
+}
+
 // 获取到文件类型
-export function getFileType(file) {
+export function getFileType(file: FileType) {
   if (file && file.fileName) {
     const lastPointeIndex = file.fileName.lastIndexOf('.')
     const len = file.fileName.length

@@ -120,15 +120,6 @@ export default defineConfig(({ command }) => {
       }),
       Unocss()
     ],
-    server:
-      process.env.VSCODE_DEBUG &&
-      (() => {
-        const url = new URL('0.0.0.0')
-        return {
-          host: url.hostname,
-          port: +url.port
-        }
-      })(),
     clearScreen: false
   }
 })

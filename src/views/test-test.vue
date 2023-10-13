@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// import { dialog } from 'electron'
-// const { dialog } = require('electron')
 import { dialog } from '@electron/remote'
 // 函数式
 // 定义状态
@@ -9,14 +7,20 @@ const dialogVisible = ref(false)
 const operaType = ref('add')
 // 打开动作
 const open = () => {
-  dialogVisible.value = true
-
   console.log('hahhaha')
 }
 const handleOpen = () => {
-  dialog.showOpenDialog({
-    properties: ['openDirectory']
-  })
+  dialog
+    .showOpenDialog({
+      properties: ['openDirectory']
+    })
+    .then(result => {
+      console.log(result.canceled)
+      console.log(result.filePaths)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   open()
   operaType.value = 'add'
 }
@@ -42,11 +46,11 @@ const operaTitle = computed(() => {
 <template>
   <div>
     <!-- 事件 -->
-    <el-button @click="handleOpen">新增</el-button>
+    <el-button type="success" @click="handleOpen">新增</el-button>
     <el-button @click="handleRemove">删除</el-button>
     <el-button @click="handleDetail">详情</el-button>
   </div>
-  <el-dialog v-model="dialogVisible" :title="operaTitle" width="30%" :before-close="handleClose">
+  <el-dialog v-model="dialogVisible" title="12" width="30%">
     <span>操作类型{{ operaType }}</span>
   </el-dialog>
 </template>
